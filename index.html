@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forex Canvas Chart — Demo</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, Segoe UI, Roboto, Arial;
+        background: #181a20;
+      }
+      .chart-wrap {
+        display: flex;
+        height: 100vh;
+      }
+      canvas {
+        background: #181a20;
+        display: block;
+        margin: auto;
+        width: 90vw;
+        height: 90vh;
+      }
+      #controls {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        color: #fff;
+        z-index: 10;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: rgba(24, 26, 32, 0.8);
+        padding: 12px 16px;
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      #controls label {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 8px;
+        color: #9aa7b2;
+      }
+      button {
+        cursor: pointer;
+        background: #434c5a;
+        color: #fff;
+        border-radius: 4px;
+        border: 1px solid #434c5a;
+        padding: 8px 16px;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: #181a20;
+        }
+      }
+      select {
+        width: 120px;
+        background: #434c5a;
+        color: #fff;
+        border-radius: 6px;
+        border: 1px solid #434c5a;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        background-position: calc(100% - 12px) center;
+        padding-right: 40px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      select:hover {
+        background-color: #181a20;
+        border-color: #5a6470;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+      select:focus {
+        outline: none;
+        background-color: #181a20;
+        box-shadow: 0 0 0 3px rgba(46, 189, 133, 0.1);
+      }
+      select option {
+        background: #434c5a;
+        color: #fff;
+        padding: 8px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <label for="symbol">Data:</label>
+      <select id="symbol">
+        <option value="EURUSD">EUR/USD</option>
+        <option value="USDJPY">USD/JPY</option>
+        <option value="GBPUSD">GBP/USD</option>
+        <option value="AUDUSD">AUD/USD</option>
+        <option value="USDCAD">USD/CAD</option>
+        <option value="USDCHF">USD/CHF</option>
+        <option value="NZDUSD">NZD/USD</option>
+        <option value="EURJPY">EUR/JPY</option>
+        <option value="GBPJPY">GBP/JPY</option>
+        <option value="EURGBP">EUR/GBP</option>
+      </select>
+      <button id="load">Load Data</button>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart" width="1200" height="800"></canvas>
+    </div>
+    <script type="module">
+      import { Chart } from './dist/bundle.js';
+
+      const canvas = document.getElementById('chart');
+      const chart = new Chart(canvas, { showVolume: true });
+
+      document.getElementById('load').addEventListener('click', async () => {
+        const sym = document.getElementById('symbol').value;
+        chart.loadData({
+          Broker: 'Advanced',
+          Symbol: sym,
+          Timeframe: 1,
+          Start: 57674,
+          End: 59113,
+        });
+      });
+
+      // load default
+      document.getElementById('load').click();
+    </script>
+  </body>
+</html>
