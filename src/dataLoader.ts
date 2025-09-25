@@ -1,4 +1,4 @@
-import type { Bar, BarChunk } from './types.js';
+import type { Bar, BarChunk } from './types.ts';
 
 export class DataLoader {
   async loadForexTesterChunk(params: {

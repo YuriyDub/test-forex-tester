@@ -1,6 +1,6 @@
-import { COLORS, FONTS } from './constatns.js';
-import type { Bar } from './types.js';
-import { formatNumber } from './utills.js';
+import { COLORS, FONTS } from './constants.ts';
+import type { Bar } from './types.ts';
+import { formatNumber } from './utils.ts';
 
 export class Renderer {
   constructor(private ctx: CanvasRenderingContext2D, private canvas: HTMLCanvasElement) {}

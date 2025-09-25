@@ -1,7 +1,7 @@
-import type { Bar, ChartConfig } from './types.js';
-import { DataLoader } from './dataLoader.js';
-import { Viewport } from './viewport.js';
-import { Renderer } from './renderer.js';
+import type { Bar, ChartConfig } from './types.ts';
+import { DataLoader } from './dataLoader.ts';
+import { Viewport } from './viewport.ts';
+import { Renderer } from './renderer.ts';
 
 export class Chart {
   private ctx: CanvasRenderingContext2D;
