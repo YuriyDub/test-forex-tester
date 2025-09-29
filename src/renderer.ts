@@ -1,6 +1,6 @@
-import { COLORS, FONTS } from './constants.ts';
-import type { Bar } from './types.ts';
-import { formatNumber } from './utils.ts';
+import { COLORS, FONTS } from './constants';
+import type { Bar } from './types';
+import { formatNumber } from './utils';
 
 export class Renderer {
   constructor(private ctx: CanvasRenderingContext2D, private canvas: HTMLCanvasElement) {}
@@ -167,6 +167,52 @@ export class Renderer {
         ctx.fillStyle = color;
         ctx.fillRect(x, bodyTop, barWidth, Math.max(1, bodyBottom - bodyTop));
       }
+    });
+  }
+
+  drawGraph(
+    left: number,
+    top: number,
+    bottom: number,
+    bars: Bar[],
+    startIndex: number,
+    visibleCount: number,
+    minPrice: number,
+    maxPrice: number,
+    barWidth: number,
+    spacing: number,
+  ) {
+    this.withSaveRestore(() => {
+      const { ctx } = this;
+
+      const priceToY = (p: number) =>
+        top + ((maxPrice - p) / (maxPrice - minPrice)) * (bottom - top);
+
+      const startBar = bars[startIndex + 0];
+      const startClose = priceToY(startBar.Close);
+      ctx.beginPath();
+      ctx.moveTo(left + barWidth / 2, startClose);
+
+      for (let i = 0; i < visibleCount; i++) {
+        const idx = Math.floor(startIndex + i);
+        const bar = bars[idx];
+        const nextBar = bars[idx + 1];
+        if (!bar || !nextBar) break;
+
+        const x = left + i * (barWidth + spacing);
+        const nextX = left + (i + 1) * (barWidth + spacing);
+
+        const close = priceToY(bar.Close);
+        const nextClose = priceToY(nextBar.Close);
+
+        const xc = (x + nextX + barWidth) / 2;
+        const yc = (close + nextClose) / 2;
+        ctx.quadraticCurveTo(x + barWidth / 2, close, xc, yc);
+      }
+
+      ctx.lineWidth = Math.max(1, Math.floor(barWidth / 8));
+      ctx.strokeStyle = COLORS.panelBorder;
+      ctx.stroke();
     });
   }
 

@@ -1,7 +1,7 @@
-import type { Bar, ChartConfig } from './types.ts';
-import { DataLoader } from './dataLoader.ts';
-import { Viewport } from './viewport.ts';
-import { Renderer } from './renderer.ts';
+import type { Bar, ChartConfig } from './types';
+import { DataLoader } from './dataLoader';
+import { Viewport } from './viewport';
+import { Renderer } from './renderer';
 
 export class Chart {
   private ctx: CanvasRenderingContext2D;
@@ -122,6 +122,20 @@ export class Chart {
 
     const { minPrice, maxPrice } = this.calculatePriceRange(startIndex, visibleCount);
     const maxVolume = this.calculateVolumeMax(startIndex, visibleCount);
+
+    // Graph
+    this.renderer.drawGraph(
+      left,
+      top,
+      bottom,
+      this.bars,
+      startIndex,
+      visibleCount,
+      minPrice,
+      maxPrice,
+      this.viewport.barWidth,
+      this.viewport.spacing,
+    );
 
     // Bars
     this.renderer.drawBars(
